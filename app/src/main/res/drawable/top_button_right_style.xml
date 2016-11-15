@@ -4,17 +4,17 @@
     <item>
         <shape android:shape="rectangle" >
             <corners android:bottomRightRadius="12dp"/>
-            <solid android:color="#1ABC9C" />
+            <solid android:color="@color/takiFajnyZielony" />
         </shape>
     </item>
 
     <item android:top="-3dp">
         <shape>
-            <solid android:color="#1ABC9C" />
+            <solid android:color="@color/takiFajnyZielony" />
             <corners android:bottomRightRadius="10dp"/>
             <stroke
                 android:width="3dp"
-                android:color="#ECF0F1" />
+                android:color="@color/takiFajnyBialy" />
         </shape>
     </item>
 

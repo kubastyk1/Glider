@@ -3,7 +3,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="speedText">SPEED</string>
     <string name="speedUnitText">[km/h]</string>
-    <string name="speedValueText">80</string>
+    <string name="speedValueText">80.9</string>
     <string name="climbSpeedText">CLIMB SPEED</string>
     <string name="climbSpeedUnitText">[ft/min]</string>
     <string name="climbSpeedValueText">800</string>

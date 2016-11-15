@@ -1,5 +1,5 @@
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -29,7 +29,7 @@
 
             <LinearLayout
                 android:layout_height="wrap_content"
-                android:layout_width="300px"
+                android:layout_width="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:orientation="vertical"
@@ -52,14 +52,14 @@
                 <TextView android:id="@+id/speedValueText"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textColor="#000000"
                     android:text="@string/speedValueText" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_height="wrap_content"
-                android:layout_width="300px"
+                android:layout_width="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:orientation="vertical"
@@ -82,22 +82,23 @@
                 <TextView android:id="@+id/climbSpeedValueText"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textColor="#000000"
                     android:text="@string/climbSpeedValueText" />
             </LinearLayout>
 
             <TextClock
                 android:layout_height="wrap_content"
-                android:layout_width="300px"
-                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:gravity="center|bottom"
+                android:textColor="#000000"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:textSize="22sp"/>
+                android:textSize="32sp"/>
 
             <LinearLayout
                 android:layout_height="wrap_content"
-                android:layout_width="300px"
+                android:layout_width="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:orientation="vertical"
@@ -120,14 +121,14 @@
                 <TextView android:id="@+id/heightValueText"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textColor="#000000"
                     android:text="@string/heightValueText" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_height="wrap_content"
-                android:layout_width="300px"
+                android:layout_width="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:orientation="vertical"
@@ -150,7 +151,7 @@
                 <TextView android:id="@+id/pressureValueText"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:textColor="#000000"
                     android:text="@string/pressureValueText" />
             </LinearLayout>
@@ -166,21 +167,27 @@
             <Button
                 android:id="@+id/findAirportButton"
                 android:layout_height="wrap_content"
-                android:layout_width="700px"
+                android:layout_width="wrap_content"
                 android:gravity="center"
                 android:textSize="14sp"
+                android:textColor="#000000"
+                android:padding="20dp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
                 android:layout_marginRight="-4dip"
-                android:background="@drawable/top_button_left_style"
+                android:background="@drawable/button_selector_left"
                 android:text="@string/findAirportButton" />
 
             <Button
                 android:id="@+id/emergencyLandingButton"
                 android:layout_height="wrap_content"
-                android:layout_width="700px"
+                android:layout_width="wrap_content"
                 android:gravity="center"
+                android:textColor="#000000"
                 android:textSize="14sp"
+                android:padding="20dp"
                 android:layout_marginLeft="-4dip"
-                android:background="@drawable/top_button_right_style"
+                android:background="@drawable/button_selector_right"
                 android:text="@string/emergencyLandingButton" />
         </LinearLayout>
 
@@ -192,16 +199,16 @@
 
             <ImageView
                 android:id="@+id/imageViewCompass"
-                android:layout_width="300px"
-                android:layout_height="300px"
+                android:layout_width="120px"
+                android:layout_height="120px"
                 android:src="@drawable/compass_icon" />
         </LinearLayout>
         </fragment>
 
     <ListView
         android:id="@+id/navList"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_gravity="left|start"
-        android:background="#ffeeeeee"/>
+        android:background="#808080"/>
 </android.support.v4.widget.DrawerLayout>
