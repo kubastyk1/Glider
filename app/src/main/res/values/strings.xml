@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Glider</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="speedText">SPEED</string>
+    <string name="speedUnitText">[km/h]</string>
+    <string name="speedValueText">80</string>
+    <string name="climbSpeedText">CLIMB SPEED</string>
+    <string name="climbSpeedUnitText">[ft/min]</string>
+    <string name="climbSpeedValueText">800</string>
+    <string name="heightText">HEIGHT</string>
+    <string name="heightUnitText">[m]</string>
+    <string name="heightValueText">1800</string>
+    <string name="pressureText">PRESSURE</string>
+    <string name="pressureUnitText">[hPa]</string>
+    <string name="pressureValueText">220.8</string>
+    <string name="emergencyLandingButton">Emergency Landing</string>
+    <string name="findAirportButton">Find Aiport</string>
+
+</resources>
