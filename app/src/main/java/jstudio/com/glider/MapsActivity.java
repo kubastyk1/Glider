@@ -1,75 +1,119 @@
 package jstudio.com.glider;
 
-import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
+import android.Manifest;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.location.LocationManager;
+import jstudio.com.glider.sensors.GpsLocationListener;
+import jstudio.com.glider.sensors.PressureListener;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import org.mapsforge.core.model.LatLong;
+import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
+import org.mapsforge.map.android.util.AndroidUtil;
+import org.mapsforge.map.android.util.MapViewerTemplate;
+import org.mapsforge.map.datastore.MapDataStore;
+import org.mapsforge.map.layer.renderer.TileRendererLayer;
+import org.mapsforge.map.reader.MapFile;
+import org.mapsforge.map.rendertheme.InternalRenderTheme;
+import org.mapsforge.map.rendertheme.XmlRenderTheme;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
-    private UiSettings mUiSettings;
-    private ListView mDrawerList;
-    private ArrayAdapter<String> mAdapter;
+import java.io.File;
+
+
+/**
+ * The simplest form of creating a map viewer based on the MapViewerTemplate.
+ * It also demonstrates the use simplified cleanup operation at activity exit.
+ */
+public class MapsActivity extends MapViewerTemplate {
+
+    /**
+     * This MapViewer uses the built-in Osmarender theme.
+     *
+     * @return the render theme to use
+     */
+    @Override
+    protected XmlRenderTheme getRenderTheme() {
+        return InternalRenderTheme.OSMARENDER;
+    }
+
+    /**
+     * This MapViewer uses the standard xml layout in the Samples app.
+     */
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    /**
+     * The id of the mapview inside the layout.
+     *
+     * @return the id of the MapView inside the layout.
+     */
+    @Override
+    protected int getMapViewId() {
+        return R.id.mapView;
+    }
+
+    /**
+     * The name of the map file.
+     *
+     * @return map file name
+     */
+    @Override
+    protected String getMapFileName() {
+        return "germany.map";
+    }
+
+    /**
+     * Creates a simple tile renderer layer with the AndroidUtil helper.
+     */
+    @Override
+    protected void createLayers() {
+        TileRendererLayer tileRendererLayer = AndroidUtil.createTileRendererLayer(this.tileCaches.get(0),
+                this.mapView.getModel().mapViewPosition, getMapFile(), getRenderTheme(), false, true, false);
+        this.mapView.getLayerManager().getLayers().add(tileRendererLayer);
+    }
+
+    @Override
+    protected void createMapViews() {
+        super.createMapViews();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean hardwareAcceleration = sharedPreferences.getBoolean("", true);
+            if (!hardwareAcceleration) {
+                mapView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+            }
+        }
+    }
+
+    /**
+     * Creates the tile cache with the AndroidUtil helper
+     */
+    @Override
+    protected void createTileCaches() {
+        this.tileCaches.add(AndroidUtil.createTileCache(this, getPersistableId(),
+                this.mapView.getModel().displayModel.getTileSize(), this.getScreenRatio(),
+                this.mapView.getModel().frameBufferModel.getOverdrawFactor()));
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidGraphicFactory.createInstance(this.getApplication());
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-
-        mDrawerList = (ListView)findViewById(R.id.navList);
-        addDrawerItems();
-
-
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        setTitle(getClass().getSimpleName());
     }
-
-
-    private void addDrawerItems() {
-
-        String[] osArray = { "Statistics", "Settings"};
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList.setAdapter(mAdapter);
-
-    }
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mUiSettings = mMap.getUiSettings();
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mUiSettings.setZoomControlsEnabled(true);
-        mUiSettings.setCompassEnabled(true);
-    }
-
-
 }
