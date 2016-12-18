@@ -5,6 +5,7 @@ import android.location.LocationListener;
 import jstudio.com.glider.MapsActivity;
 import jstudio.com.glider.R;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mapsforge.core.model.LatLong;
@@ -17,6 +18,7 @@ public class GpsLocationListener implements LocationListener {
     private LatLong latLong;
 
     private TextView speedValue;
+    private ImageView glider;
 
     private float bearing;
 
@@ -25,6 +27,7 @@ public class GpsLocationListener implements LocationListener {
     public GpsLocationListener(MapsActivity activity) {
         this.activity = activity;
         speedValue = (TextView) activity.findViewById(R.id.speedValueText);
+        glider = activity.glider;
     }
 
     @Override
@@ -44,7 +47,7 @@ public class GpsLocationListener implements LocationListener {
         speedValue.setText(speed);
         //heightValueText.setText(altitude);
         //climbSpeedValueText.setText(vspeed);
-        //glider.setRotation(bearing);
+        glider.setRotation(bearing);
 
         latLong = new LatLong(loc.getLatitude(),loc.getLongitude());
 

@@ -16,6 +16,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
+import android.widget.ImageView;
 
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
@@ -113,6 +114,7 @@ public class MapsActivity extends MapViewerTemplate {
     private SensorManager sensorManager;
     private SensorEventListener sensorListener;
     private Sensor sensor;
+    public ImageView glider;
 
     public void setCenter(LatLong latLong) {
         this.mapView.getModel().mapViewPosition.animateTo(latLong);
@@ -149,6 +151,7 @@ public class MapsActivity extends MapViewerTemplate {
         super.onCreate(savedInstanceState);
         setTitle(getClass().getSimpleName());
 
+        glider = (ImageView) findViewById(R.id.imageViewGlider);
         locationManagerInit();
         pressureListenerInit();
     }
