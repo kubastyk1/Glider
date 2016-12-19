@@ -122,7 +122,7 @@ public class MapsActivity extends MapViewerTemplate {
 
     private void locationManagerInit() {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        gpsLocationListener = new GpsLocationListener(this);
+        gpsLocationListener = new GpsLocationListener(this, true);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -143,6 +143,27 @@ public class MapsActivity extends MapViewerTemplate {
         sensorManager.registerListener(sensorListener, sensor, 5000000);
     }
 
+    private void sensorsInit() {
+        boolean barometer;
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
+        sensorListener = new PressureListener(this);
+        barometer = sensorManager.registerListener(sensorListener, sensor, 5000000);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        gpsLocationListener = new GpsLocationListener(this, barometer);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 0, gpsLocationListener);
+    }
+
 
 
     @Override
@@ -152,7 +173,6 @@ public class MapsActivity extends MapViewerTemplate {
         setTitle(getClass().getSimpleName());
 
         glider = (ImageView) findViewById(R.id.imageViewGlider);
-        locationManagerInit();
-        pressureListenerInit();
+        sensorsInit();
     }
 }

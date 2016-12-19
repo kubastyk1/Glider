@@ -8,11 +8,6 @@ import android.hardware.SensorManager;
 import jstudio.com.glider.R;
 import android.widget.TextView;
 
-
-/**
- * Created by Janek on 2016-12-17.
- */
-
 public class PressureListener implements SensorEventListener {
 
     private TextView pressureValue;
@@ -49,7 +44,7 @@ public class PressureListener implements SensorEventListener {
     private long lastTime = System.currentTimeMillis();
     private double curAlt = 0;
     private long curTime = 0;
-    private float seaLevelPressure = 1033;
+    private float seaLevelPressure = 1030;
     private float currentPressure;
 
     private void calculateVSpeed() {

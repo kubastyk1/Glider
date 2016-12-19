@@ -18,16 +18,27 @@ public class GpsLocationListener implements LocationListener {
     private LatLong latLong;
 
     private TextView speedValue;
+    private TextView pressureValue;
+    private TextView altitudeValue;
+    private TextView climbSpeedValue;
     private ImageView glider;
 
     private float bearing;
+    private boolean barometer;
 
     private MapsActivity activity;
 
-    public GpsLocationListener(MapsActivity activity) {
+    public GpsLocationListener(MapsActivity activity, boolean barometer) {
         this.activity = activity;
+        this.barometer = barometer;
         speedValue = (TextView) activity.findViewById(R.id.speedValueText);
         glider = activity.glider;
+        if(!barometer) {
+            pressureValue = (TextView) activity.findViewById(R.id.pressureValueText);
+            altitudeValue = (TextView) activity.findViewById(R.id.heightValueText);
+            climbSpeedValue = (TextView) activity.findViewById(R.id.climbSpeedValueText);
+            pressureValue.setText("N/A");
+        }
     }
 
     @Override
@@ -45,13 +56,19 @@ public class GpsLocationListener implements LocationListener {
         String dir = "";
         String vspeed = String.format("%.1f", calculateVSpeed(loc.getAltitude()));
         speedValue.setText(speed);
-        //heightValueText.setText(altitude);
-        //climbSpeedValueText.setText(vspeed);
+
         glider.setRotation(bearing);
 
         latLong = new LatLong(loc.getLatitude(),loc.getLongitude());
 
-        this.activity.setCenter(latLong);
+        if(loc.getSpeed()>0.3) {
+            this.activity.setCenter(latLong);
+        }
+
+        if(!barometer) {
+            altitudeValue.setText(altitude);
+            climbSpeedValue.setText(vspeed);
+        }
     }
 
     private double calculateVSpeed(double d) {
