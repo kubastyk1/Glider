@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/pressure1"
+        android:title="PRESSURE 1"/>
+    <item
+        android:id="@+id/pressure2"
+        android:title="PRESSURE 2"/>
+    <item
+        android:id="@+id/pressure3"
+        android:title="PRESSURE 3"/>
+    <item
+        android:id="@+id/pressure4"
+        android:title="PRESSURE 4"/>
+
+</menu>

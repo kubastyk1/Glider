@@ -9,6 +9,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 import jstudio.com.glider.sensors.GpsLocationListener;
+import jstudio.com.glider.sensors.PressureButtonListener;
 import jstudio.com.glider.sensors.PressureListener;
 import android.os.Build;
 import android.os.Bundle;
@@ -90,6 +91,7 @@ public class MapsActivity extends MapViewerTemplate {
     protected void createMapViews() {
         super.createMapViews();
 
+        mapView.setBuiltInZoomControls(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             boolean hardwareAcceleration = sharedPreferences.getBoolean("", true);
@@ -164,7 +166,10 @@ public class MapsActivity extends MapViewerTemplate {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 0, gpsLocationListener);
     }
 
-
+    public void showPressureMenu(View view){
+        PressureButtonListener buttonListener = new PressureButtonListener(this);
+        buttonListener.showPopupMenu(view);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
