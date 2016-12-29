@@ -8,11 +8,6 @@
     tools:context="jstudio.com.glider.MapsActivity"
     android:background="#AAAAAA">
 
-    <org.mapsforge.map.android.view.MapView
-        android:id="@+id/mapView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" />
-
     <ImageView
         android:src="@drawable/glider"
         android:id="@+id/imageViewGlider"
@@ -21,10 +16,32 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <LinearLayout
-        android:layout_height="wrap_content"
+    <fragment
+        android:id="@+id/listViewFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="jstudio.com.glider.ListViewFragment"
+        tools:layout="@layout/list_view">
+    </fragment>
+
+    <fragment
+        android:id="@+id/listFragment"
         android:layout_width="wrap_content"
-        android:weightSum="5"
+        android:layout_height="60dp"
+        class="jstudio.com.glider.MyListFragment"
+        tools:layout="@layout/fragment_rsslist_overview"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        class="jstudio.com.glider.DetailFragment"
+        tools:layout="@layout/fragment_rssitem_detail"
         android:orientation="horizontal"
         android:background="@drawable/down_linear_layout_full"
         android:showDividers="middle"
@@ -32,175 +49,8 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
-
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <TextView android:id="@+id/speedText"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="12sp"
-                android:textColor="#000000"
-                android:text="@string/speedText" />
-
-            <TextView android:id="@+id/speedUnitText"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="10sp"
-                android:textColor="#000000"
-                android:text="@string/speedUnitText" />
-
-            <TextView android:id="@+id/speedValueText"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="22sp"
-                android:textColor="#000000"
-                android:text="@string/speedValueText" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <TextView android:id="@+id/climbSpeedText"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="12sp"
-                android:textColor="#000000"
-                android:text="@string/climbSpeedText" />
-
-            <TextView android:id="@+id/climbSpeedUnitText"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="10sp"
-                android:textColor="#000000"
-                android:text="@string/climbSpeedUnitText" />
-
-            <TextView android:id="@+id/climbSpeedValueText"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="22sp"
-                android:textColor="#000000"
-                android:text="@string/climbSpeedValueText" />
-        </LinearLayout>
-
-        <TextClock
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:gravity="center|bottom"
-            android:textColor="#000000"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:textSize="32sp"/>
-
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <TextView android:id="@+id/heightText"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="12sp"
-                android:textColor="#000000"
-                android:text="@string/heightText" />
-
-            <TextView android:id="@+id/heightUnitText"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="10sp"
-                android:textColor="#000000"
-                android:text="@string/heightUnitText" />
-
-            <TextView android:id="@+id/heightValueText"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:textSize="22sp"
-                android:textColor="#000000"
-                android:text="@string/heightValueText" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <Button android:id="@+id/pressureText"
-                android:layout_height="16dp"
-                android:layout_width="wrap_content"
-                android:textSize="12sp"
-                android:background="@android:color/transparent"
-                android:textColor="#000000"
-                android:onClick="showPressureMenu"
-                android:text="@string/pressureText" />
-
-            <Button android:id="@+id/pressureUnitText"
-                android:layout_height="12dp"
-                android:layout_width="wrap_content"
-                android:textSize="10sp"
-                android:background="@android:color/transparent"
-                android:textColor="#000000"
-                android:onClick="showPressureMenu"
-                android:text="@string/pressureUnitText" />
-
-            <Button
-                android:id="@+id/pressureValueText"
-                android:textSize="22sp"
-                android:textColor="#000000"
-                android:background="@android:color/transparent"
-                android:text="@string/pressureValueText"
-                android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:onClick="showPressureMenu"/>
-        </LinearLayout>
-    </LinearLayout>
+    </fragment>
 
 
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal|top"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_height="60dp">
-
-        <Button
-            android:id="@+id/findAirportButton"
-            android:gravity="center"
-            android:textSize="14sp"
-            android:textColor="#000000"
-            android:padding="20dp"
-            android:background="@drawable/button_selector_left"
-            android:text="@string/findAirportButton"
-            android:layout_width="140dp"
-            android:layout_height="60dp" />
-
-        <Button
-            android:id="@+id/emergencyLandingButton"
-            android:layout_height="60dp"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:padding="20dp"
-            android:background="@drawable/button_selector_right"
-            android:text="@string/emergencyLandingButton"
-            android:layout_width="140dp" />
-    </LinearLayout>
 
 </RelativeLayout>
