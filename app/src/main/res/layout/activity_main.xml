@@ -8,6 +8,14 @@
     tools:context="jstudio.com.glider.MapsActivity"
     android:background="#AAAAAA">
 
+    <fragment
+        android:id="@+id/listViewFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="jstudio.com.glider.fragments.NavigationDrawerFragment"
+        tools:layout="@layout/fragment_navigation_drawer">
+    </fragment>
+
     <ImageView
         android:src="@drawable/glider"
         android:id="@+id/imageViewGlider"
@@ -17,19 +25,11 @@
         android:layout_centerHorizontal="true" />
 
     <fragment
-        android:id="@+id/listViewFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        class="jstudio.com.glider.ListViewFragment"
-        tools:layout="@layout/list_view">
-    </fragment>
-
-    <fragment
         android:id="@+id/listFragment"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        class="jstudio.com.glider.MyListFragment"
-        tools:layout="@layout/fragment_rsslist_overview"
+        class="jstudio.com.glider.fragments.TopFragment"
+        tools:layout="@layout/fragment_top"
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal|top"
         android:layout_alignParentTop="true"
@@ -40,8 +40,8 @@
         android:id="@+id/detailFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        class="jstudio.com.glider.DetailFragment"
-        tools:layout="@layout/fragment_rssitem_detail"
+        class="jstudio.com.glider.fragments.BottomFragment"
+        tools:layout="@layout/fragment_bottom"
         android:orientation="horizontal"
         android:background="@drawable/down_linear_layout_full"
         android:showDividers="middle"
@@ -50,7 +50,5 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true">
     </fragment>
-
-
 
 </RelativeLayout>

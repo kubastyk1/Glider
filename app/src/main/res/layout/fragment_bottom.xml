@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/down_linear_layout_full"
+    android:showDividers="middle"
+    android:divider="@drawable/green_tall_divider"
+    android:layout_gravity="bottom|center_horizontal"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView android:id="@+id/speedText"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#000000"
+            android:text="@string/speedText" />
+
+        <TextView android:id="@+id/speedUnitText"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="10sp"
+            android:textColor="#000000"
+            android:text="@string/speedUnitText" />
+
+        <TextView android:id="@+id/speedValueText"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="22sp"
+            android:textColor="#000000"
+            android:text="@string/speedValueText" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView android:id="@+id/climbSpeedText"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#000000"
+            android:text="@string/climbSpeedText" />
+
+        <TextView android:id="@+id/climbSpeedUnitText"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="10sp"
+            android:textColor="#000000"
+            android:text="@string/climbSpeedUnitText" />
+
+        <TextView android:id="@+id/climbSpeedValueText"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="22sp"
+            android:textColor="#000000"
+            android:text="@string/climbSpeedValueText" />
+    </LinearLayout>
+
+    <TextClock
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:gravity="center|bottom"
+        android:textColor="#000000"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="32sp"/>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView android:id="@+id/heightText"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="12sp"
+            android:textColor="#000000"
+            android:text="@string/heightText" />
+
+        <TextView android:id="@+id/heightUnitText"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="10sp"
+            android:textColor="#000000"
+            android:text="@string/heightUnitText" />
+
+        <TextView android:id="@+id/heightValueText"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="22sp"
+            android:textColor="#000000"
+            android:text="@string/heightValueText" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <Button android:id="@+id/pressureText"
+            android:layout_height="16dp"
+            android:layout_width="wrap_content"
+            android:textSize="12sp"
+            android:background="@android:color/transparent"
+            android:textColor="#000000"
+            android:onClick="showPressureMenu"
+            android:text="@string/pressureText" />
+
+        <Button android:id="@+id/pressureUnitText"
+            android:layout_height="12dp"
+            android:layout_width="wrap_content"
+            android:textSize="10sp"
+            android:background="@android:color/transparent"
+            android:textColor="#000000"
+            android:onClick="showPressureMenu"
+            android:text="@string/pressureUnitText" />
+
+        <Button
+            android:id="@+id/pressureValueText"
+            android:textSize="22sp"
+            android:textColor="#000000"
+            android:background="@android:color/transparent"
+            android:text="@string/pressureValueText"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:onClick="showPressureMenu"/>
+    </LinearLayout>
+</LinearLayout>

@@ -2,7 +2,7 @@ package jstudio.com.glider;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.ContextWrapper;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
@@ -10,56 +10,34 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 
-import jstudio.com.glider.drawing.DrawLines;
 import jstudio.com.glider.sensors.GpsLocationListener;
 import jstudio.com.glider.sensors.PressureButtonListener;
 import jstudio.com.glider.sensors.PressureListener;
+
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import org.mapsforge.core.graphics.Color;
-import org.mapsforge.core.graphics.Paint;
-import org.mapsforge.core.graphics.Style;
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
 import org.mapsforge.map.android.util.AndroidUtil;
 import org.mapsforge.map.android.util.MapViewerTemplate;
-import org.mapsforge.map.datastore.MapDataStore;
-import org.mapsforge.map.layer.overlay.Polyline;
 import org.mapsforge.map.layer.renderer.TileRendererLayer;
-import org.mapsforge.map.reader.MapFile;
 import org.mapsforge.map.rendertheme.InternalRenderTheme;
 import org.mapsforge.map.rendertheme.XmlRenderTheme;
-import com.google.android.gms.maps.SupportMapFragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  * The simplest form of creating a map viewer based on the MapViewerTemplate.
  * It also demonstrates the use simplified cleanup operation at activity exit.
  */
-public class MapsActivity extends MapViewerTemplate/* implements MyListFragment.OnItemSelectedListener */{
+public class MapsActivity extends MapViewerTemplate{
 
     /**
      * This MapViewer uses the built-in Osmarender theme.
@@ -195,6 +173,34 @@ public class MapsActivity extends MapViewerTemplate/* implements MyListFragment.
         buttonListener.showPopupMenu(view);
     }
 
+    private void addDrawerItems() {
+
+        String[] osArray = { "Home","Navigate to", "History", "Settings"};
+        mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, osArray);
+        mDrawerList.setAdapter(mAdapter);
+
+        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch(position) {
+                    case 0:
+                        MapsActivity.this.startActivity(new Intent(MapsActivity.this, MapsActivity.class));
+                        break;
+                    case 1:
+
+                        break;
+                    case 2:
+                        MapsActivity.this.startActivity(new Intent(MapsActivity.this, HistoryActivity.class));
+                        break;
+                    case 3:
+
+                        break;
+                    default:
+                }
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidGraphicFactory.createInstance(this.getApplication());
@@ -205,88 +211,7 @@ public class MapsActivity extends MapViewerTemplate/* implements MyListFragment.
 
         mDrawerList = (ListView) findViewById(R.id.navList);
         addDrawerItems();
-
-//        sensorsInit();
-        WriteBtn();
-        ReadBtn();
+        sensorsInit();
     }
 
- /*   @Override
-    public void onRssItemSelected(String link) {
-  //      DetailFragment fragment = (DetailFragment) getFragmentManager()
-  //              .findFragmentById(R.id.detailFragment);
-    //    fragment.setText(link);
-    }
-*/
-    private void addDrawerItems() {
-
-        String[] osArray = { "Statistics", "Settings"};
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
-        mDrawerList.setAdapter(mAdapter);
-
-    }
-
-    // write text to file
-    public void WriteBtn() {
-
-        try {
-            FileOutputStream fileout = openFileOutput("gliderApp.txt", MODE_PRIVATE);
-            OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
-
-            ArrayList<LatLong> coordinatesList = getLatlongtoSave();
-            for(LatLong latLong: coordinatesList){
-                Double latX = latLong.getLatitude();
-                Double latY = latLong.getLongitude();
-                outputWriter.write(latX.toString() + ", " + latY.toString() + "\n");
-                Log.i("Test Zapisu", "text : " + latX.toString() + ", " + latY.toString() + " : end");
-            }
-            outputWriter.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public ArrayList<LatLong>  getLatlongtoSave(){
-
-        ArrayList<LatLong> coordinatesList = new ArrayList<LatLong>();
-        coordinatesList.add(new LatLong(51.709268, 19.481249));
-        coordinatesList.add(new LatLong(51.727879, 19.498415));
-        coordinatesList.add(new LatLong(51.752646, 19.530344));
-        coordinatesList.add(new LatLong(51.76019, 19.466143));
-        coordinatesList.add(new LatLong(51.749883, 19.449835));
-
-        return coordinatesList;
-    }
-
-    // Read text from file
-    public void ReadBtn() {
-        //reading text from file
-        try {
-            ArrayList<LatLong> coordinatesList = new ArrayList<LatLong>();
-            FileInputStream fileIn = openFileInput("gliderApp.txt");
-            InputStreamReader inputRead= new InputStreamReader(fileIn);
-            BufferedReader reader = new BufferedReader(inputRead);
-
-            char[] inputBuffer= new char[100];
-            String s="";
-            String mLine;
-            int charRead;
-            String[] parts;
-
-            while ((mLine = reader.readLine()) != null) {
-                // char to string conversion
-                parts = mLine.split(",");
-                Log.i("Test Odczytu", "text : "+ parts[0] +" -- " + parts[1] +" : end");
-                coordinatesList.add(new LatLong(Double.parseDouble(parts[0]), Double.parseDouble(parts[1])));
-            }
-
-            DrawLines drawLines = new DrawLines();
-            drawLines.drawLines(mapView, coordinatesList);
-            inputRead.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }
