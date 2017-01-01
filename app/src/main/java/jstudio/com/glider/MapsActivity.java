@@ -23,6 +23,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.mapsforge.core.model.LatLong;
 import org.mapsforge.map.android.graphics.AndroidGraphicFactory;
@@ -31,7 +33,6 @@ import org.mapsforge.map.android.util.MapViewerTemplate;
 import org.mapsforge.map.layer.renderer.TileRendererLayer;
 import org.mapsforge.map.rendertheme.InternalRenderTheme;
 import org.mapsforge.map.rendertheme.XmlRenderTheme;
-
 
 /**
  * The simplest form of creating a map viewer based on the MapViewerTemplate.
@@ -119,6 +120,7 @@ public class MapsActivity extends MapViewerTemplate{
     public ImageView glider;
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
+    private boolean isRecordingButtonPressed = false;
 
     public void setCenter(LatLong latLong) {
         this.mapView.getModel().mapViewPosition.animateTo(latLong);
@@ -173,10 +175,11 @@ public class MapsActivity extends MapViewerTemplate{
         buttonListener.showPopupMenu(view);
     }
 
-    private void addDrawerItems() {
+    private void initNavigationDrawer() {
 
-        String[] osArray = { "Home","Navigate to", "History", "Settings"};
+        final String[] osArray = { "Home","Navigate to", "History", "Settings", "Start recording"};
         mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, osArray);
+        ListView mDrawerList = (ListView) findViewById(R.id.navList);
         mDrawerList.setAdapter(mAdapter);
 
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -195,10 +198,28 @@ public class MapsActivity extends MapViewerTemplate{
                     case 3:
 
                         break;
+                    case 4:
+                        TextView tv = (TextView) view;
+                        recordingCoordinates(tv);
+                        break;
                     default:
                 }
             }
         });
+    }
+
+    public void recordingCoordinates(TextView tv){
+        if(isRecordingButtonPressed == true){
+            isRecordingButtonPressed = false;
+            gpsLocationListener.rocordingButtonPressed(isRecordingButtonPressed);
+            Toast.makeText(this, "Saving data", Toast.LENGTH_SHORT).show();
+            tv.setText("Start recording");
+        }else{
+            isRecordingButtonPressed = true;
+            gpsLocationListener.rocordingButtonPressed(isRecordingButtonPressed);
+            Toast.makeText(this, "Recording started", Toast.LENGTH_SHORT).show();
+            tv.setText("End recording");
+        }
     }
 
     @Override
@@ -209,9 +230,7 @@ public class MapsActivity extends MapViewerTemplate{
 
         glider = (ImageView) findViewById(R.id.imageViewGlider);
 
-        mDrawerList = (ListView) findViewById(R.id.navList);
-        addDrawerItems();
         sensorsInit();
+        initNavigationDrawer();
     }
-
 }

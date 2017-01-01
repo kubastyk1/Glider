@@ -16,8 +16,6 @@ import org.mapsforge.map.layer.renderer.TileRendererLayer;
 import org.mapsforge.map.rendertheme.InternalRenderTheme;
 import org.mapsforge.map.rendertheme.XmlRenderTheme;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -77,7 +75,6 @@ public class HistoryActivity extends MapViewerTemplate {
 
     /* OnCreate Zone */
 
-    private String textFileName = "gliderApp.txt";
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
     Map<String, ArrayList> coordinatesMap = new HashMap<>();
@@ -89,17 +86,18 @@ public class HistoryActivity extends MapViewerTemplate {
         setTitle(getClass().getSimpleName());
 
         createFileIO();
+
         mDrawerList = (ListView) findViewById(R.id.historyList);
         addDrawerItems();
     }
 
     private void createFileIO(){
         try{
-            FileInputStream fileIn = openFileInput(textFileName);
-            FileOutputStream fileOut = openFileOutput(textFileName, MODE_PRIVATE);
-            FileIO fileIO = new FileIO(mapView, fileIn, fileOut);
-            fileIO.WriteDataToFile();
-            coordinatesMap = fileIO.ReadDataFromFile();
+            FileIO fileIO = new FileIO();
+            if(!fileIO.getFile().exists()){
+                fileIO.writeSampleValuesToFile();
+            }
+            coordinatesMap = fileIO.readDataFromFile();
         } catch (Exception e) {
             e.printStackTrace();
         }
