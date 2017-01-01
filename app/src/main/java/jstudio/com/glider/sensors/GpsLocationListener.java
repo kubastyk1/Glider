@@ -4,11 +4,18 @@ import android.location.Location;
 import android.location.LocationListener;
 import jstudio.com.glider.MapsActivity;
 import jstudio.com.glider.R;
+import jstudio.com.glider.drawing.FileIO;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.mapsforge.core.model.LatLong;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class GpsLocationListener implements LocationListener {
     private double lastAlt = 0;
@@ -25,8 +32,10 @@ public class GpsLocationListener implements LocationListener {
 
     private float bearing;
     private boolean barometer;
+    private boolean isPressed = false;
 
     private MapsActivity activity;
+    private ArrayList<String> coordinatesList;
 
     public GpsLocationListener(MapsActivity activity, boolean barometer) {
         this.activity = activity;
@@ -39,6 +48,7 @@ public class GpsLocationListener implements LocationListener {
             climbSpeedValue = (TextView) activity.findViewById(R.id.climbSpeedValueText);
             pressureValue.setText("N/A");
         }
+        coordinatesList = new ArrayList<>();
     }
 
     @Override
@@ -69,6 +79,7 @@ public class GpsLocationListener implements LocationListener {
             altitudeValue.setText(altitude);
             climbSpeedValue.setText(vspeed);
         }
+        recordingData(loc);
     }
 
     private double calculateVSpeed(double d) {
@@ -77,6 +88,30 @@ public class GpsLocationListener implements LocationListener {
         curAlt = d;
         curTime = System.currentTimeMillis();
         return ((curAlt - lastAlt) / ((curTime - lastTime) / 1000));
+    }
+
+    public void recordingData(Location loc){
+        if(isPressed == true){
+            if(coordinatesList.isEmpty()){
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Date d = new Date();
+                String date = sdf.format(d);
+                coordinatesList.add(date);
+            }
+            coordinatesList.add(loc.getLatitude() + ", " + loc.getLongitude());
+            Log.i("Recording Coordinates", "text : "+ loc.getLatitude() + ", " + loc.getLongitude() +" : end");
+
+        }else{
+            if(!coordinatesList.isEmpty()){
+                FileIO fileIO = new FileIO();
+                fileIO.writeDataToFile(coordinatesList);
+                coordinatesList.clear();
+            }
+        }
+    }
+
+    public void rocordingButtonPressed(boolean press){
+        isPressed = press;
     }
 
     @Override

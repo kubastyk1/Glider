@@ -1,54 +1,46 @@
 package jstudio.com.glider.drawing;
 
+import android.os.Environment;
 import android.util.Log;
 
 import org.mapsforge.core.model.LatLong;
-import org.mapsforge.map.android.view.MapView;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class FileIO {
 
-    private FileInputStream fileIn;
-    private FileOutputStream fileOut;
-    private MapView mapView;
+    private File file;
 
-    public FileIO(MapView mapView, FileInputStream fileIn, FileOutputStream fileOut){
-        this.mapView = mapView;
-        this.fileIn = fileIn;
-        this.fileOut = fileOut;
+    public FileIO(){
+        file = new File(Environment.getExternalStorageDirectory(), "GliderApp.txt");
     }
 
-    public void WriteDataToFile() {
+    public void writeDataToFile(ArrayList<String> coordinatesList) {
         try {
-            OutputStreamWriter outputWriter = new OutputStreamWriter(fileOut);
-            RouteDrawing routeDrawing = new RouteDrawing();
-            ArrayList<String> coordinatesList = routeDrawing.getSampleValues();
+            FileOutputStream outputStream = new FileOutputStream(file, true);
             for(String str: coordinatesList){
-                outputWriter.write(str + "\n");
+                outputStream.write((str + "\n").getBytes());
             }
-            outputWriter.close();
-
-        } catch (Exception e) {
+            outputStream.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public Map<String, ArrayList> ReadDataFromFile() {
+    public Map<String, ArrayList> readDataFromFile() {
 
         Map<String, ArrayList> coordinatesMap = new LinkedHashMap<>();
         ArrayList<LatLong> coordinatesList = new ArrayList<>();
         try {
-            InputStreamReader inputRead= new InputStreamReader(fileIn);
-            BufferedReader reader = new BufferedReader(inputRead);
-
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
             boolean isFirstElement = true;
             String mLine;
             String date = null;
@@ -70,14 +62,26 @@ public class FileIO {
                 }
             }
             coordinatesMap.put(date, coordinatesList);
+
             for (Map.Entry<String,ArrayList> entry : coordinatesMap.entrySet()) {
                 Log.i("Maping Test", "text : "+ entry.getKey() +" -- " +entry.getValue() +" : end");
             }
-            inputRead.close();
-        } catch (Exception e) {
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
         return coordinatesMap;
+    }
+
+    public void writeSampleValuesToFile(){
+
+        RouteDrawing routeDrawing = new RouteDrawing();
+        ArrayList<String> coordinatesList = routeDrawing.getSampleValues();
+        writeDataToFile(coordinatesList);
+    }
+
+    public File getFile(){
+        return file;
     }
 }
