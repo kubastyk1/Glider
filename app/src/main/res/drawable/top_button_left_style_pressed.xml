@@ -11,7 +11,7 @@
     <item android:top="-3dp">
         <shape>
             <solid android:color="@color/takiFajnyBialy" />
-            <corners android:bottomLeftRadius="10dp"/>
+            <corners android:bottomLeftRadius="12dp"/>
             <stroke
                 android:width="3dp"
                 android:color="@color/takiFajnyZielony" />

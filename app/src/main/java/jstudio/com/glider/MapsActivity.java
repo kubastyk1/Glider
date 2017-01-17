@@ -10,6 +10,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
 
+import jstudio.com.glider.drawing.RouteDrawing;
 import jstudio.com.glider.sensors.GpsLocationListener;
 import jstudio.com.glider.sensors.PressureButtonListener;
 import jstudio.com.glider.sensors.PressureListener;
@@ -33,6 +34,8 @@ import org.mapsforge.map.android.util.MapViewerTemplate;
 import org.mapsforge.map.layer.renderer.TileRendererLayer;
 import org.mapsforge.map.rendertheme.InternalRenderTheme;
 import org.mapsforge.map.rendertheme.XmlRenderTheme;
+
+import java.util.ArrayList;
 
 /**
  * The simplest form of creating a map viewer based on the MapViewerTemplate.
@@ -120,6 +123,8 @@ public class MapsActivity extends MapViewerTemplate{
     public ImageView glider;
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
+    private ArrayList<RouteDrawing> routeDrawingsArray = new ArrayList<>();
+    private boolean isNavigationStarted;
     private boolean isRecordingButtonPressed = false;
 
     public void setCenter(LatLong latLong) {
@@ -190,7 +195,7 @@ public class MapsActivity extends MapViewerTemplate{
                         MapsActivity.this.startActivity(new Intent(MapsActivity.this, MapsActivity.class));
                         break;
                     case 1:
-
+                        MapsActivity.this.startActivity(new Intent(MapsActivity.this, NavigationActivity.class));
                         break;
                     case 2:
                         MapsActivity.this.startActivity(new Intent(MapsActivity.this, HistoryActivity.class));
@@ -222,6 +227,36 @@ public class MapsActivity extends MapViewerTemplate{
         }
     }
 
+    public void initNavigation() {
+        String started = getIntent().getStringExtra("EXTRA_IS_NAVIGATION_STARTED");
+        isNavigationStarted = Boolean.parseBoolean(started);
+
+        if (isNavigationStarted) {
+            String endLatitude = getIntent().getStringExtra("EXTRA_END_LATITUDE");
+            String endLongitude = getIntent().getStringExtra("EXTRA_END_LONGITUDE");
+
+            LatLong endPoint = new LatLong(Double.parseDouble(endLatitude), Double.parseDouble(endLongitude));
+
+            gpsLocationListener.setNavigationPoint(endPoint);
+            gpsLocationListener.rocordingIsNavigationStarted(isNavigationStarted);
+
+        }
+    }
+
+    public void drawNavigationLine(ArrayList<LatLong> coordinates){
+        RouteDrawing routeDrawing = new RouteDrawing();
+        routeDrawing.drawLines(mapView, coordinates);
+        routeDrawing.hideLine();
+        if(routeDrawingsArray.isEmpty()){
+            routeDrawingsArray.add(0, routeDrawing);
+            routeDrawingsArray.add(1, routeDrawing);
+        } else {
+            routeDrawingsArray.set(1, routeDrawingsArray.get(0));
+            routeDrawingsArray.set(0, routeDrawing);
+        }
+        routeDrawingsArray.get(0).showLine();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AndroidGraphicFactory.createInstance(this.getApplication());
@@ -232,5 +267,6 @@ public class MapsActivity extends MapViewerTemplate{
 
         sensorsInit();
         initNavigationDrawer();
+        initNavigation();
     }
 }

@@ -22,7 +22,8 @@ public class GpsLocationListener implements LocationListener {
     private long lastTime = 0;
     private double curAlt = 0;
     private long curTime = 0;
-    private LatLong latLong;
+    private LatLong lastPosition = new LatLong(0,0);
+    private LatLong navigationPoint;
 
     private TextView speedValue;
     private TextView pressureValue;
@@ -33,9 +34,11 @@ public class GpsLocationListener implements LocationListener {
     private float bearing;
     private boolean barometer;
     private boolean isPressed = false;
+    private boolean isNavigationStarted;
 
     private MapsActivity activity;
     private ArrayList<String> coordinatesList;
+    private ArrayList<String> extraValuesList;
     private double topSpeed;
     private double distance;
     private double maxAltitude;
@@ -60,6 +63,7 @@ public class GpsLocationListener implements LocationListener {
 
     @Override
     public void onLocationChanged(Location loc) {
+        Log.i("Location changed", "text : "+ loc.getLatitude() + ", " + loc.getLongitude() +" : end");
         String longitude = "Longitude: " + loc.getLongitude();
         String latitude = "Latitude: " + loc.getLatitude();
         String altitude = String.format("%.1f", loc.getAltitude());
@@ -76,10 +80,10 @@ public class GpsLocationListener implements LocationListener {
 
         glider.setRotation(bearing);
 
-        latLong = new LatLong(loc.getLatitude(),loc.getLongitude());
+        lastPosition = new LatLong(loc.getLatitude(),loc.getLongitude());
 
         if(loc.getSpeed()>0.3) {
-            this.activity.setCenter(latLong);
+            this.activity.setCenter(lastPosition);
         }
 
         if(!barometer) {
@@ -87,6 +91,7 @@ public class GpsLocationListener implements LocationListener {
             climbSpeedValue.setText(vspeed);
         }
         recordingData(loc);
+        changeNavigationCoordinates(loc);
     }
 
     private double calculateVSpeed(double d) {
@@ -128,8 +133,26 @@ public class GpsLocationListener implements LocationListener {
         }
     }
 
+    public void changeNavigationCoordinates(Location loc){
+        if(isNavigationStarted){
+            Log.i("Inside draw line", "text : "+ loc.getLatitude() + ", " + loc.getLongitude() +" : end");
+            ArrayList<LatLong> coordinates = new ArrayList<>();
+            coordinates.add(new LatLong(loc.getLatitude(), loc.getLongitude()));
+            coordinates.add(navigationPoint);
+
+            activity.drawNavigationLine(coordinates);
+        }
+
+    }
+
     public void rocordingButtonPressed(boolean press){
         isPressed = press;
+    }
+
+    public void rocordingIsNavigationStarted(boolean press){ isNavigationStarted = press; }
+
+    public void setNavigationPoint(LatLong latLong){
+        navigationPoint = latLong;
     }
 
     @Override

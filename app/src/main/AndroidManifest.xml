@@ -29,6 +29,9 @@
         <activity
             android:name=".HistoryActivity"
             android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".NavigationActivity"
+            android:screenOrientation="landscape"></activity>
     </application>
 
 </manifest>
