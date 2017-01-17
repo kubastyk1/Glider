@@ -36,6 +36,10 @@ public class GpsLocationListener implements LocationListener {
 
     private MapsActivity activity;
     private ArrayList<String> coordinatesList;
+    private double topSpeed;
+    private double distance;
+    private double maxAltitude;
+    private Location lastLoc;
 
     public GpsLocationListener(MapsActivity activity, boolean barometer) {
         this.activity = activity;
@@ -49,6 +53,9 @@ public class GpsLocationListener implements LocationListener {
             pressureValue.setText("N/A");
         }
         coordinatesList = new ArrayList<>();
+        topSpeed=0;
+        distance=0;
+        maxAltitude=0;
     }
 
     @Override
@@ -100,12 +107,23 @@ public class GpsLocationListener implements LocationListener {
             }
             coordinatesList.add(loc.getLatitude() + ", " + loc.getLongitude());
             Log.i("Recording Coordinates", "text : "+ loc.getLatitude() + ", " + loc.getLongitude() +" : end");
+            double speed = loc.getSpeed()*3.6;
+            if(speed>topSpeed) {
+                topSpeed = speed;
+            }
+            if(lastLoc!=null) {
+                distance += loc.distanceTo(lastLoc);
+            }
+            lastLoc = loc;
 
         }else{
             if(!coordinatesList.isEmpty()){
                 FileIO fileIO = new FileIO();
                 fileIO.writeDataToFile(coordinatesList);
                 coordinatesList.clear();
+                topSpeed = 0;
+                distance=0;
+                maxAltitude=0;
             }
         }
     }

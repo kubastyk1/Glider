@@ -15,5 +15,9 @@
     <string name="pressureValueText">-</string>
     <string name="emergencyLandingButton">Emergency</string>
     <string name="findAirportButton">Home</string>
+    <string name="distanceText">Distance:</string>
+    <string name="maxAltitudeText">Max alt:</string>
+    <string name="topSpeedText">Top speed:</string>
+    <string name="na">N/A</string>
 
 </resources>

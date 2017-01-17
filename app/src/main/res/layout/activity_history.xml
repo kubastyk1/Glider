@@ -7,13 +7,93 @@
     android:weightSum="3"
     tools:context="jstudio.com.glider.HistoryActivity">
 
-    <ListView
-        android:id="@+id/historyList"
+    <LinearLayout
+        android:id="@+id/listViewFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_gravity="left|start"
         android:layout_weight="1"
-        android:background="@color/takiFajnyBialy"/>
+        android:orientation="vertical"
+        >
+        <ListView
+            android:id="@+id/historyList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="left|start"
+            android:layout_weight="3"
+            android:background="@color/takiFajnyBialy"/>
+
+        <LinearLayout
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <TextView android:id="@+id/distance"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#000000"
+                    android:text="@string/distanceText" />
+
+                <TextView android:id="@+id/topSpeed"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#000000"
+                    android:text="@string/topSpeedText" />
+
+                <TextView android:id="@+id/maxAltitude"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#000000"
+                    android:text="@string/maxAltitudeText" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <TextView android:id="@+id/distanceValue"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#000000"
+                    android:text="@string/na" />
+
+                <TextView android:id="@+id/topSpeedValue"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#000000"
+                    android:text="@string/na" />
+
+                <TextView android:id="@+id/maxAltitudeValue"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="#000000"
+                    android:text="@string/na" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
     <org.mapsforge.map.android.view.MapView
         android:id="@+id/mapView"
